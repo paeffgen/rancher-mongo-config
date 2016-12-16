@@ -20,7 +20,6 @@ mongo-base:
   labels:
     io.rancher.container.hostname_override: container_name
     io.rancher.container.start_once: true
-  #build: https://github.com/paeffgen/rancher-mongo-config.git 
   image: paeffgen/mongo-config
   stdin_open: true
   entrypoint: /bin/true
