@@ -10,6 +10,7 @@ mongo-cluster:
   image: mongo:3.2
   labels:
     io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:host_label_soft: location=aws
     io.rancher.sidekicks: mongo-base, mongo-datavolume
   volumes_from:
     - mongo-datavolume
@@ -19,6 +20,7 @@ mongo-base:
   tty: true
   labels:
     io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:host_label_soft: location=aws
     io.rancher.container.start_once: true
   image: paeffgen/mongo-config
   stdin_open: true
@@ -27,6 +29,7 @@ mongo-datavolume:
   net: none
   labels:
     io.rancher.container.hostname_override: container_name
+    io.rancher.scheduler.affinity:host_label_soft: location=aws
     io.rancher.container.start_once: true
   volumes:
     - /data/db
