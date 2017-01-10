@@ -1,13 +1,21 @@
 #!/bin/bash
 DIG=/usr/bin/dig
+CURL=/usr/bin/curl
+
+STACK=`$CURL -s http://rancher-metadata/latest/self/stack/name`
+SERVICE=`$CURL -s http://rancher-metadata/latest/self/service/name`
+NAME=$STACK-$SERVICE
+SELF=`$CURL -s http://rancher-metadata/latest/self/container/name`
+
 
 function cluster_init {
 	sleep 10
 	MYIP=$(ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)
-	$DIG A $MONGO_SERVICE_NAME +short > ips.tmp
+	#$DIG A $MONGO_SERVICE_NAME +short > ips.tmp
+	$CURL -s http://rancher-metadata/latest/self/service/containers | grep -Eo "$NAME-[0-9]+" > ips.tmp
 	mongo --eval "printjson(rs.initiate())"
 	for member in $(cat ips.tmp); do
-		if [ $member != $MYIP ]; then
+		if [ $member != $SELF ]; then
 			mongo --eval "printjson(rs.add('$member:27017'))"
 			sleep 5
 		fi

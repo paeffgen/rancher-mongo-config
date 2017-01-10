@@ -6,6 +6,7 @@ echo "deb http://security.debian.org/ wheezy/updates main contrib non-free " | t
 echo "deb-src http://security.debian.org/ wheezy/updates main contrib non-free" | tee /etc/apt/sources.list.d/wheezy-security.list > /dev/null
 apt-get -q update > /dev/null
 apt-get install -qqy dnsutils jq > /dev/null 2>&1
+apt-get install -qqy curl > /dev/null 2>&1
 
 # Check for lowest ID
 /opt/rancher/bin/lowest_idx.sh
